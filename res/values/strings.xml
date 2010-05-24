@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, CreateNewGame!</string>
+    <string name="app_name">Tichu Scorer</string>
+<string name="name_label">Name:</string>
+<string name="create_new_player_title">Create New Player</string>
+
+<string name="player_edit_save_button_label">Save Player</string>
+<string name="edit_player_title">Edit Player</string>
+<string name="cancel_button_label">Cancel</string>
+</resources>
