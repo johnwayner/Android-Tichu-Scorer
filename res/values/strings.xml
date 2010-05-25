@@ -8,4 +8,17 @@
 <string name="player_edit_save_button_label">Save Player</string>
 <string name="edit_player_title">Edit Player</string>
 <string name="cancel_button_label">Cancel</string>
+<string name="create_game_instructions">Specify the player for each seat.  Use the South East seat only if there are 5 players.</string>
+<string name="north">North</string>
+<string name="east">East</string>
+<string name="south">South</string>
+<string name="west">West</string>
+<string name="southeast">SouthEast</string>
+<string name="north_abbrv">N</string>
+<string name="east_abbrv">E</string>
+<string name="south_abbrv">S</string>
+<string name="west_abbrv">W</string>
+<string name="southeast_abbrv">SE</string>
+<string name="create_new_game_title">Tichu Scrorer - New Game</string>
+<string name="manage_players_title">Tichu Scorer - Manage Players</string>
 </resources>

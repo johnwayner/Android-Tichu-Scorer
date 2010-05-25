@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:title="New Player" android:id="@+id/create_game_new_player_menu_item"></item>
+<item android:title="Clear All Seats" android:id="@+id/create_game_clear_seats_menu_item"></item>
+<item android:title="Manage Players" android:id="@+id/create_game_manage_players_menu_item"></item>
+</menu>
