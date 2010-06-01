@@ -10,8 +10,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import com.johnwayner.android.tichu.scorer.R;
 import com.johnwayner.android.tichu.scorer.dialogs.ManagePlayerDialogBuilder;
@@ -57,6 +60,29 @@ public class CreateNewGame extends Activity {
         
         spinner.setAdapter(playerAdapter);
         spinner.postInvalidate();
+        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+
+			@Override
+			public void onItemSelected(AdapterView<?> thisSpinner, View arg1,
+					int arg2, long arg3) {
+				Player selectedPlayer = (Player) thisSpinner.getSelectedItem();
+				// de-select selected player from other spinners
+				for(Spinner spinner : playerSpinners) {
+					if(! spinner.equals(thisSpinner)) {
+						if(spinner.getSelectedItem().equals(selectedPlayer)) {
+							spinner.setSelection(0);
+						}
+					}
+				}
+				
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> arg0) {
+				// do nothing
+			}
+		});
+        playerSpinners.add(spinner);
         playerArrayAdapters.add(playerAdapter);
     }
     	
@@ -128,4 +154,5 @@ public class CreateNewGame extends Activity {
     }
     
     protected List<ArrayAdapter<Player>> playerArrayAdapters = new ArrayList<ArrayAdapter<Player>>();
+    protected List<Spinner> playerSpinners = new ArrayList<Spinner>();
 }
