@@ -17,6 +17,13 @@
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</activity>		
+		<activity android:name=".actions.ManageGames"
+			android:label="@string/manage_games_title">
+			<intent-filter>
+				<action android:name="com.johnwayner.android.tichu.scorer.MANAGE_GAMES" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>			
 	</application>
 
 

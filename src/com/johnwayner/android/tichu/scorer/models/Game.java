@@ -5,6 +5,7 @@ package com.johnwayner.android.tichu.scorer.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * @author johnwayner
@@ -17,6 +18,7 @@ public class Game extends AbstractIdentifiedObject implements Serializable {
 
 	public Game() {
 		super();
+		gameDate = new Date();
 		seats = new ArrayList<Seat>();
 		hands = new ArrayList<Hand>();
 	}
@@ -42,7 +44,31 @@ public class Game extends AbstractIdentifiedObject implements Serializable {
 	public void setHands(ArrayList<Hand> hands) {
 		this.hands = hands;
 	}
+	
+	public Date getGameDate() {
+		return gameDate;
+	}
 
+	public void setGameDate(Date gameDate) {
+		this.gameDate = gameDate;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		if(null == gameDate) gameDate = new Date(); //TODO REMOVE!!!!
+		return ((null != name)?name+" - ":"") + gameDate.toLocaleString();
+	}
+
+	protected Date gameDate;
+	protected String name;
 	protected ArrayList<Seat> seats;
 	protected ArrayList<Hand> hands;
 }

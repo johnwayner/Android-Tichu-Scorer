@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -46,9 +47,14 @@ public class CreateNewGame extends Activity {
 					seats.add(pSpinner.getSeat());
 				}
 				newGame.setSeats(seats);
+				EditText nameWidget = (EditText)CreateNewGame.this.findViewById(R.id.create_game_name_edit_text);
+				if(nameWidget.getText().toString().length() != 0) {
+					newGame.setName(nameWidget.getText().toString());
+				}
 				ApplicationState.getState(
 						CreateNewGame.this.getApplicationContext())
 							.getGames().add(newGame);
+				startActivity(new Intent("com.johnwayner.android.tichu.scorer.MANAGE_GAMES"));
 			}
 		});
     }   

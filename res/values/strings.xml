@@ -22,4 +22,6 @@
 <string name="create_new_game_title">Tichu Scrorer - New Game</string>
 <string name="manage_players_title">Tichu Scorer - Manage Players</string>
 <string name="create_game_button_label">Create Game</string>
+<string name="manage_games_title">Tichu Scorer - Manage Games</string>
+<string name="create_game_name_label">Name (optional)</string>
 </resources>
