@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 
@@ -20,7 +22,10 @@ import com.johnwayner.android.tichu.scorer.R;
 import com.johnwayner.android.tichu.scorer.dialogs.ManagePlayerDialogBuilder;
 import com.johnwayner.android.tichu.scorer.dialogs.ManagePlayerDialogBuilder.ManagePlayerDialogCallBack;
 import com.johnwayner.android.tichu.scorer.models.ApplicationState;
+import com.johnwayner.android.tichu.scorer.models.Game;
 import com.johnwayner.android.tichu.scorer.models.Player;
+import com.johnwayner.android.tichu.scorer.models.PlayerPosition;
+import com.johnwayner.android.tichu.scorer.models.Seat;
 
 public class CreateNewGame extends Activity {
     /** Called when the activity is first created. */
@@ -29,15 +34,31 @@ public class CreateNewGame extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_game);
         setupSpinners();
-                
+        
+        Button gameButton = (Button)findViewById(R.id.create_game_button);
+        gameButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Game newGame = new Game();
+				ArrayList<Seat> seats = new ArrayList<Seat>();
+				for(PlayerSpinner pSpinner : playerSpinners) {
+					seats.add(pSpinner.getSeat());
+				}
+				newGame.setSeats(seats);
+				ApplicationState.getState(
+						CreateNewGame.this.getApplicationContext())
+							.getGames().add(newGame);
+			}
+		});
     }   
     
     protected void setupSpinners() {
-		setupSpinner(R.id.north_spinner, R.string.north_abbrv);
-		setupSpinner(R.id.east_spinner, R.string.east_abbrv);
-		setupSpinner(R.id.south_spinner, R.string.south_abbrv);
-		setupSpinner(R.id.west_spinner, R.string.west_abbrv);
-		setupSpinner(R.id.southeast_spinner, R.string.southeast_abbrv);
+		setupSpinner(R.id.north_spinner, R.string.north_abbrv, PlayerPosition.NORTH);
+		setupSpinner(R.id.east_spinner, R.string.east_abbrv, PlayerPosition.EAST);
+		setupSpinner(R.id.south_spinner, R.string.south_abbrv, PlayerPosition.SOUTH);
+		setupSpinner(R.id.west_spinner, R.string.west_abbrv, PlayerPosition.WEST);
+		setupSpinner(R.id.southeast_spinner, R.string.southeast_abbrv, PlayerPosition.SOUTHEAST);
     }
     
     protected List<Player> getChoiceList(int posRsrcId) {
@@ -48,7 +69,7 @@ public class CreateNewGame extends Activity {
         return choiceList;
     }
     
-    protected void setupSpinner(int spinnerRsrcId, int posRsrcId) {
+    protected void setupSpinner(int spinnerRsrcId, int posRsrcId, PlayerPosition position) {
     	Spinner spinner = (Spinner)findViewById(spinnerRsrcId);
         
         ArrayAdapter<Player> playerAdapter = 
@@ -67,10 +88,10 @@ public class CreateNewGame extends Activity {
 					int arg2, long arg3) {
 				Player selectedPlayer = (Player) thisSpinner.getSelectedItem();
 				// de-select selected player from other spinners
-				for(Spinner spinner : playerSpinners) {
-					if(! spinner.equals(thisSpinner)) {
-						if(spinner.getSelectedItem().equals(selectedPlayer)) {
-							spinner.setSelection(0);
+				for(PlayerSpinner pSpinner : playerSpinners) {
+					if(! pSpinner.spinner.equals(thisSpinner)) {
+						if(pSpinner.spinner.getSelectedItem().equals(selectedPlayer)) {
+							pSpinner.spinner.setSelection(0);
 						}
 					}
 				}
@@ -82,8 +103,7 @@ public class CreateNewGame extends Activity {
 				// do nothing
 			}
 		});
-        playerSpinners.add(spinner);
-        playerArrayAdapters.add(playerAdapter);
+        playerSpinners.add(new PlayerSpinner(playerAdapter, spinner, position));
     }
     	
 	@Override
@@ -122,8 +142,8 @@ public class CreateNewGame extends Activity {
 			public void addNewPlayer(String name) {
 				Player newPlayer = new Player(name);
 				ApplicationState.getState(CreateNewGame.this).getPlayers().add(newPlayer);
-				for(ArrayAdapter<Player> adapter : playerArrayAdapters) {
-					adapter.add(newPlayer);
+				for(PlayerSpinner pSpinner : playerSpinners) {
+					pSpinner.adapter.add(newPlayer);
 				}
 			}
 		});
@@ -153,6 +173,24 @@ public class CreateNewGame extends Activity {
     	super.onPause();
     }
     
-    protected List<ArrayAdapter<Player>> playerArrayAdapters = new ArrayList<ArrayAdapter<Player>>();
-    protected List<Spinner> playerSpinners = new ArrayList<Spinner>();
+    public static class PlayerSpinner {
+    	public ArrayAdapter<Player> adapter;
+    	public Spinner spinner;
+    	public PlayerPosition position;
+		
+    	public PlayerSpinner(ArrayAdapter<Player> adapter, Spinner spinner,
+				PlayerPosition position) {
+			super();
+			this.adapter = adapter;
+			this.spinner = spinner;
+			this.position = position;
+		}
+    	
+    	public Seat getSeat() {
+    		return new Seat(position, (Player)spinner.getSelectedItem());
+    	}
+    	
+    }
+    
+    protected List<PlayerSpinner> playerSpinners = new ArrayList<PlayerSpinner>();
 }
